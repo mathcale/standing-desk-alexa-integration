@@ -7,7 +7,7 @@
 WiFiClient client;
 
 Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
-Adafruit_MQTT_Subscribe standingDeskControl = Adafruit_MQTT_Subscribe(&mqtt, AIO_USERNAME "/feeds/smart-standing-desk", MQTT_QOS_1);
+Adafruit_MQTT_Subscribe standingDeskControl = Adafruit_MQTT_Subscribe(&mqtt, TOPIC_NAME, MQTT_QOS_1);
 
 const int downOptoPin = 2;
 const int upOptoPin = 3;

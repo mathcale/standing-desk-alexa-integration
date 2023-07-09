@@ -5,4 +5,4 @@
 #define AIO_SERVERPORT  1883
 #define AIO_USERNAME    "YOUR_ADAFRUIT_IO_USER_HERE"
 #define AIO_KEY         "YOUR_ADAFRUIT_IO_TOKEN_HERE"
-
+#define TOPIC_NAME      AIO_USERNAME "/feeds/your_feed_name_here"
