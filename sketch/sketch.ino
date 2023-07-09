@@ -17,6 +17,7 @@ void setup() {
 
   pinMode(downOptoPin, OUTPUT);
   pinMode(upOptoPin, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
 
   setupWifi();
   randomSeed(micros());
@@ -26,7 +27,9 @@ void setup() {
 }
 
 void loop() {
-  setupMQTTBroker();
+  if (!mqtt.connected()) {
+    setupMQTTBroker();
+  }
 
   mqtt.processPackets(10000);
 
@@ -40,10 +43,12 @@ void setupWifi() {
   Serial.println(WLAN_SSID);
 
   WiFi.begin(WLAN_SSID, WLAN_PASS);
+  blinkLED();
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(F("."));
+    blinkLED();
   }
 
   Serial.println();
@@ -53,7 +58,7 @@ void setupWifi() {
 }
 
 void setupMQTTBroker() {
-  Serial.print(F("Connecting to Adafruit IO... "));
+  Serial.print(F("Connecting to MQTT broker... "));
 
   int8_t returnCode;
 
@@ -76,13 +81,12 @@ void setupMQTTBroker() {
     delay(5000);
   }
 
-  Serial.println(F("Connected!"));
+  Serial.println(F("connected!"));
 }
 
 void onEvent(char *message, uint16_t len) {
   char messageBuffer[40];
-  snprintf(messageBuffer, sizeof(messageBuffer), "Desk status is [%s], len: [%u]", message, len);
-
+  snprintf(messageBuffer, sizeof(messageBuffer), "Desk status is [%s]", message);
   Serial.println(messageBuffer);
 
   if (strcmp(message, "UP") == 0) {
@@ -95,7 +99,23 @@ void onEvent(char *message, uint16_t len) {
 }
 
 void moveDesk(int pin) {
+  blinkLED();
+
   digitalWrite(pin, HIGH);
   delay(2000);
   digitalWrite(pin, LOW);
+}
+
+void blinkLED() {
+  int times = 3;
+  int milis = 100;
+
+  for (int i = 0; i <= times; i++) {
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(milis);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(milis);
+  }
+
+  digitalWrite(LED_BUILTIN, HIGH);
 }
