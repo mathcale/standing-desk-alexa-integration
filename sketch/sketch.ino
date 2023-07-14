@@ -9,8 +9,10 @@ WiFiClient client;
 Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
 Adafruit_MQTT_Subscribe standingDeskControl = Adafruit_MQTT_Subscribe(&mqtt, TOPIC_NAME, MQTT_QOS_1);
 
-const int downOptoPin = 2;
-const int upOptoPin = 3;
+// 12
+// 19
+const int downOptoPin = 12;
+const int upOptoPin = 19;
 
 void setup() {
   Serial.begin(115200);
